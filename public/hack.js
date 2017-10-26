@@ -145,6 +145,15 @@ uiModules.get('app/dashboard', []).run(function ($http, $location, kbnUrl, getAp
                 })
                 return;
 
+            case "saveFilters":
+                console.log(getAppState().filters);
+                window.localStorage.setItem('filters', JSON.stringify(getAppState().filters));
+                return;
+
+            case "loadFilters":
+                console.log(window.localStorage.getItem('filters'))
+                getAppState().filters = JSON.parse(window.localStorage.getItem('filters'))
+                return;
 
             case "addSearchChip":
                 getAppState().filters.push(KibanaApiService.handleTextFilter(e.data.text, e.data.index));
@@ -159,14 +168,12 @@ uiModules.get('app/dashboard', []).run(function ($http, $location, kbnUrl, getAp
                 createIndexPattern(e.data.index, e.data.timeField).then(function (res) {
                     postResToApp("createIndexPattern", res);
                 });
-
                 return;
 
             case "setDefaultIndexPattern":
                 setDefaultIndexPattern(e.data.indexPattern).then(function (res) {
                     postResToApp("setDefaultIndexPattern", res);
                 });
-
                 return;
 
             case "isIndexPatternExist":
